@@ -1,0 +1,13 @@
+name: Verify simulation
+on: [push, pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.10.9"
+      - run: uv sync --locked --all-groups
+      - run: make check
+      - run: uv run pytest --cov=ue_context --cov-fail-under=90

@@ -1,0 +1,35 @@
+{
+  "python": "3.13.16",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "trials": 40,
+  "run_count": 1920,
+  "configuration": {
+    "scenario": "loss_ack",
+    "seed": 1,
+    "ues": 3,
+    "sessions_per_ue": 2,
+    "duration_ms": 540.0,
+    "procedure_timeout_ms": 110.0,
+    "poll_ms": 15.0,
+    "tick_ms": 2.0,
+    "grace_ms": 12.0,
+    "fixed_ms": 25.0,
+    "freshness_ms": 60.0,
+    "recovery": false,
+    "recovery_attempts": 2,
+    "record_trace": true,
+    "fault_probability": 0.7
+  },
+  "source_sha256": {
+    "ue_context/cli.py": "77cbfd18940f001f3ced2bb8f254bc61b06137bb025013e01192e64e91f71979",
+    "ue_context/metrics.py": "91a487b6b9ac12c83943d7765ae65f4b098c85dc5dc52a7961462c9aee048ab6",
+    "ue_context/model.py": "d67095c5875bff5492812103f3c76cd62472261b8b9cd5ae7001e5ab42b801d9",
+    "ue_context/plots.py": "713cce73cf380109c360a46eb4b639c0367308b9adf31af3ded6d8d099090767",
+    "ue_context/simulation.py": "d465576870e39e9c772e1f5db3eb4a9d6b41147c039c6803a5e33435e33aa17c",
+    "ue_context/verifier.py": "8d563c5a296390a3f1bab7ad5ff4db5db3404d96cfee05e3933a979806255cc6",
+    "ue_context/__init__.py": "6a4af0cd47724fd3d26290fb86bd788015937e319e712e7a0694577424c90fff"
+  },
+  "comparison": "Paired seeds, complete-snapshot observations, synthetic node model",
+  "timestamp_resolution_ms": 2,
+  "note": "Wall time is local runtime, not production monitor latency."
+}

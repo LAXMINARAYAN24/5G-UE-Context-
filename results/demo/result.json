@@ -1,0 +1,357 @@
+{
+  "config": {
+    "scenario": "loss_ack",
+    "seed": 1,
+    "ues": 3,
+    "sessions_per_ue": 2,
+    "duration_ms": 540,
+    "procedure_timeout_ms": 110,
+    "poll_ms": 15,
+    "tick_ms": 2,
+    "grace_ms": 12,
+    "fixed_ms": 25,
+    "freshness_ms": 60,
+    "recovery": true,
+    "recovery_attempts": 2,
+    "record_trace": true,
+    "fault_probability": 0.7
+  },
+  "mode": "aware",
+  "alarms": [
+    {
+      "key": "ue-0/session-1",
+      "time": 270,
+      "rule": "QOS_PROFILE_MISMATCH",
+      "mismatch_since": 258,
+      "ran": {
+        "session": true,
+        "resources": true,
+        "qos": 2,
+        "rrc": "CONNECTED",
+        "cell": "cell-a",
+        "pending": "",
+        "transaction": 2,
+        "deadline": 0.0,
+        "version": 2,
+        "changed_at": 153.4085647456689
+      },
+      "core": {
+        "session": true,
+        "resources": true,
+        "qos": 1,
+        "rrc": "CONNECTED",
+        "cell": "cell-a",
+        "pending": "",
+        "transaction": 2,
+        "deadline": 255.0,
+        "version": 4,
+        "changed_at": 255.0
+      },
+      "status": "true_positive"
+    },
+    {
+      "key": "ue-2/session-1",
+      "time": 284,
+      "rule": "QOS_PROFILE_MISMATCH",
+      "mismatch_since": 272,
+      "ran": {
+        "session": true,
+        "resources": true,
+        "qos": 2,
+        "rrc": "CONNECTED",
+        "cell": "cell-a",
+        "pending": "",
+        "transaction": 2,
+        "deadline": 0.0,
+        "version": 2,
+        "changed_at": 156.1742447254492
+      },
+      "core": {
+        "session": true,
+        "resources": true,
+        "qos": 1,
+        "rrc": "CONNECTED",
+        "cell": "cell-a",
+        "pending": "",
+        "transaction": 2,
+        "deadline": 263.0,
+        "version": 4,
+        "changed_at": 263.0
+      },
+      "status": "true_positive"
+    },
+    {
+      "key": "ue-2/session-2",
+      "time": 286,
+      "rule": "QOS_PROFILE_MISMATCH",
+      "mismatch_since": 274,
+      "ran": {
+        "session": true,
+        "resources": true,
+        "qos": 2,
+        "rrc": "CONNECTED",
+        "cell": "cell-a",
+        "pending": "",
+        "transaction": 2,
+        "deadline": 0.0,
+        "version": 2,
+        "changed_at": 160.62732556190343
+      },
+      "core": {
+        "session": true,
+        "resources": true,
+        "qos": 1,
+        "rrc": "CONNECTED",
+        "cell": "cell-a",
+        "pending": "",
+        "transaction": 2,
+        "deadline": 265.0,
+        "version": 4,
+        "changed_at": 265.0
+      },
+      "status": "true_positive"
+    },
+    {
+      "key": "ue-1/session-2",
+      "time": 286,
+      "rule": "QOS_PROFILE_MISMATCH",
+      "mismatch_since": 274,
+      "ran": {
+        "session": true,
+        "resources": true,
+        "qos": 2,
+        "rrc": "CONNECTED",
+        "cell": "cell-a",
+        "pending": "",
+        "transaction": 2,
+        "deadline": 0.0,
+        "version": 2,
+        "changed_at": 155.29959638278368
+      },
+      "core": {
+        "session": true,
+        "resources": true,
+        "qos": 1,
+        "rrc": "CONNECTED",
+        "cell": "cell-a",
+        "pending": "",
+        "transaction": 2,
+        "deadline": 261.0,
+        "version": 4,
+        "changed_at": 261.0
+      },
+      "status": "true_positive"
+    }
+  ],
+  "episodes": [
+    {
+      "key": "ue-0/session-1",
+      "rule": "QOS_PROFILE_MISMATCH",
+      "start": 256,
+      "end": 288
+    },
+    {
+      "key": "ue-1/session-2",
+      "rule": "QOS_PROFILE_MISMATCH",
+      "start": 262,
+      "end": 300
+    },
+    {
+      "key": "ue-2/session-1",
+      "rule": "QOS_PROFILE_MISMATCH",
+      "start": 264,
+      "end": 302
+    },
+    {
+      "key": "ue-2/session-2",
+      "rule": "QOS_PROFILE_MISMATCH",
+      "start": 266,
+      "end": 306
+    }
+  ],
+  "metrics": {
+    "tp": 4,
+    "fp": 0,
+    "fn": 0,
+    "duplicates": 0,
+    "truth_episodes": 4,
+    "alarm_count": 4,
+    "precision": 1.0,
+    "recall": 1.0,
+    "negative_sessions": 2,
+    "false_positive_sessions": 0,
+    "false_positive_rate": 0.0,
+    "mean_detection_delay_ms": 19.5,
+    "mean_lead_time_ms": 8.0,
+    "lead_time_samples": 2,
+    "failed_probes": 4,
+    "total_probes": 18,
+    "recovery_successes": 4,
+    "recovery_jobs": 4,
+    "recovery_success_rate": 1.0,
+    "mean_recovery_ms": 19.44767042848514,
+    "mismatch_exposure_ms": 148,
+    "session_time_ms": 3240,
+    "snapshot_discards": 3,
+    "unknown_checks": 178,
+    "checks": 1614
+  },
+  "final_states": {
+    "ue-0/session-1": {
+      "ran": {
+        "session": false,
+        "resources": false,
+        "qos": 0,
+        "rrc": "CONNECTED",
+        "cell": "cell-a",
+        "pending": "",
+        "transaction": 3,
+        "deadline": 0.0,
+        "version": 4,
+        "changed_at": 354.39850670154544
+      },
+      "core": {
+        "session": false,
+        "resources": false,
+        "qos": 0,
+        "rrc": "CONNECTED",
+        "cell": "cell-a",
+        "pending": "",
+        "transaction": 3,
+        "deadline": 460.0,
+        "version": 6,
+        "changed_at": 358.78370595079133
+      }
+    },
+    "ue-0/session-2": {
+      "ran": {
+        "session": false,
+        "resources": false,
+        "qos": 0,
+        "rrc": "CONNECTED",
+        "cell": "cell-a",
+        "pending": "",
+        "transaction": 3,
+        "deadline": 0.0,
+        "version": 3,
+        "changed_at": 356.31268622402615
+      },
+      "core": {
+        "session": false,
+        "resources": false,
+        "qos": 0,
+        "rrc": "CONNECTED",
+        "cell": "cell-a",
+        "pending": "",
+        "transaction": 3,
+        "deadline": 462.0,
+        "version": 6,
+        "changed_at": 362.0703070184526
+      }
+    },
+    "ue-1/session-1": {
+      "ran": {
+        "session": false,
+        "resources": false,
+        "qos": 0,
+        "rrc": "CONNECTED",
+        "cell": "cell-a",
+        "pending": "",
+        "transaction": 3,
+        "deadline": 0.0,
+        "version": 3,
+        "changed_at": 358.7386896875429
+      },
+      "core": {
+        "session": false,
+        "resources": false,
+        "qos": 0,
+        "rrc": "CONNECTED",
+        "cell": "cell-a",
+        "pending": "",
+        "transaction": 3,
+        "deadline": 464.0,
+        "version": 6,
+        "changed_at": 361.86762791913833
+      }
+    },
+    "ue-1/session-2": {
+      "ran": {
+        "session": false,
+        "resources": false,
+        "qos": 0,
+        "rrc": "CONNECTED",
+        "cell": "cell-a",
+        "pending": "",
+        "transaction": 3,
+        "deadline": 0.0,
+        "version": 4,
+        "changed_at": 364.02546785397544
+      },
+      "core": {
+        "session": false,
+        "resources": false,
+        "qos": 0,
+        "rrc": "CONNECTED",
+        "cell": "cell-a",
+        "pending": "",
+        "transaction": 3,
+        "deadline": 466.0,
+        "version": 6,
+        "changed_at": 370.36419378989007
+      }
+    },
+    "ue-2/session-1": {
+      "ran": {
+        "session": false,
+        "resources": false,
+        "qos": 0,
+        "rrc": "CONNECTED",
+        "cell": "cell-a",
+        "pending": "",
+        "transaction": 3,
+        "deadline": 0.0,
+        "version": 4,
+        "changed_at": 364.85376617759465
+      },
+      "core": {
+        "session": false,
+        "resources": false,
+        "qos": 0,
+        "rrc": "CONNECTED",
+        "cell": "cell-a",
+        "pending": "",
+        "transaction": 3,
+        "deadline": 468.0,
+        "version": 6,
+        "changed_at": 368.96920377296294
+      }
+    },
+    "ue-2/session-2": {
+      "ran": {
+        "session": false,
+        "resources": false,
+        "qos": 0,
+        "rrc": "CONNECTED",
+        "cell": "cell-a",
+        "pending": "",
+        "transaction": 3,
+        "deadline": 0.0,
+        "version": 4,
+        "changed_at": 368.9552604730564
+      },
+      "core": {
+        "session": false,
+        "resources": false,
+        "qos": 0,
+        "rrc": "CONNECTED",
+        "cell": "cell-a",
+        "pending": "",
+        "transaction": 3,
+        "deadline": 470.0,
+        "version": 6,
+        "changed_at": 377.11493964582814
+      }
+    }
+  }
+}
