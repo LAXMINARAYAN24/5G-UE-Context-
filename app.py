@@ -8,20 +8,40 @@ import streamlit as st
 
 from ue_context.simulation import SCENARIOS, Config, run
 
+
 st.set_page_config(page_title="5G UE Context Lab", layout="wide")
 st.title("5G UE Context Detection and Recovery")
 st.write("An abstract protocol-state simulation. Times are virtual milliseconds.")
+
 with st.sidebar:
     scenario = st.selectbox("Scenario", SCENARIOS, index=3)
     mode = st.selectbox("Detector", ("aware", "fixed", "immediate"))
+
+    if mode == "aware":
+        grace = st.slider(
+            "Persistence grace (ms)",
+            min_value=0,
+            max_value=40,
+            value=12,
+            help="Minimum persistence time before the aware detector raises an alarm.",
+        )
+    elif mode == "fixed":
+        grace = 12
+        st.caption("Fixed waiting threshold: 25 ms")
+    else:
+        grace = 12
+        st.caption("Immediate detector: no persistence waiting threshold.")
+
     seed = st.number_input("Random seed", 1, 100000, 1)
     ues = st.slider("UEs", 1, 10, 3)
-    sessions = st.slider("Sessions per UE", 1, 3, 2)
+    sessions = st.slider("Sessions per UE", 1, 5, 2)
     recovery = st.checkbox("Enable simulated recovery", value=True)
-    probability = st.slider("Fraction of sessions eligible for the fault", 0.0, 1.0, 0.7)
-    grace = st.slider("Persistence grace in ms", 0, 40, 12)
+    probability = st.slider(
+        "Fraction of sessions eligible for the fault", 0.0, 1.0, 0.7
+    )
     timeout = st.slider("Procedure timeout in ms", 90, 130, 110)
     clicked = st.button("Run experiment", type="primary")
+
 if clicked or "result" not in st.session_state:
     st.session_state.result = run(
         Config(
