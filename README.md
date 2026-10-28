@@ -71,7 +71,8 @@ make test
 | `tests/` | Model, detector, recovery, metrics, exports and dashboard tests |
 | `results/benchmark/` | Raw runs, summary tables, figures and source hashes |
 | `results/sensitivity.csv` | Observation interval and grace sensitivity results |
-| `deliverables/Project_Pre_Report.docx` | Project explanation, reference comparison, measurements, limitations and viva answers |
+| `deliverables/Final_IEEE_Report.pdf` | Final four-page IEEE report (LaTeX source: `Final_IEEE_Report.tex`) |
+| `deliverables/Final_Presentation_With_Graphs.pptx` | Final 15-slide presentation with measured results |
 
 ## Model and assumptions
 
@@ -133,10 +134,10 @@ The dashboard extends the horizon to 600 ms to accommodate its larger UE setting
 
 ## Research and scope
 
-See the pre-report and `research/references.md`. The conceptual reference chosen for
+See the final report (`deliverables/Final_IEEE_Report.pdf`) and `research/references.md`. The conceptual reference chosen for
 this implementation is *Data Consistency in the 5G Specification* (ICIN 2020).
 The two KPI anomaly papers from the proposal are supporting references. This is an
 engineering extension relative to those references, not a claim of worldwide novelty.
 Full-paper replication, operator traces, hardware tests, and production recovery remain
-outside this prototype. The supplied CI workflow has not been run on GitHub.
+outside this prototype. The CI workflow (`.github/workflows/check.yml`) runs lint, type checks and tests on every push.
 

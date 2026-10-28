@@ -141,7 +141,9 @@ def build():
         )
 
     p("5G UE Context Desynchronization Detection and Recovery", "Title")
-    p("Final project report\n15 October 2026\n\nLaxminarayan Sahu  231IT035\nSandesh K  231IT061\nSujan H  231IT076\n\nDepartment of Information Technology\nNational Institute of Technology Karnataka Surathkal")
+    p(
+        "Final project report\n15 October 2026\n\nLaxminarayan Sahu  231IT035\nSandesh K  231IT061\nSujan H  231IT076\n\nDepartment of Information Technology\nNational Institute of Technology Karnataka Surathkal"
+    )
     h("Abstract")
     p(
         "This project implements a protocol-aware verifier for an abstract 5G network. It tracks the RAN's applied resources and the Core's committed session information for each UE/session, waits for valid procedures to finish, and detects persistent contradictions. It then evaluates a bounded reconciliation policy using controlled faults. The completed deliverable is a reproducible simulation prototype with a dashboard, tests, traces and measured comparisons."
@@ -256,21 +258,45 @@ def build():
     )
 
     page("Formal state model and transition specification")
-    p("We define a timed extended finite-state machine. Finite procedure states carry transaction identifiers, versions, timestamps and an abstract QoS identifier. This describes the implementation rather than the complete 3GPP protocol. The formal specification is maintained in research/formal_model.md.")
+    p(
+        "We define a timed extended finite-state machine. Finite procedure states carry transaction identifiers, versions, timestamps and an abstract QoS identifier. This describes the implementation rather than the complete 3GPP protocol. The formal specification is maintained in research/formal_model.md."
+    )
     h("State spaces")
-    p("The RAN has ABSENT or APPLIED(q) access resources, with CONNECTED or IDLE access state in the implemented controls. The Core has STABLE, SETUP_PENDING, MODIFY_PENDING and RELEASE_PENDING control states plus a committed session/resource/QoS record. Initially both records are inactive. RRC is already CONNECTED because radio attachment precedes the session workflow. RRC_INACTIVE is outside this prototype.")
-    table(["Event", "RAN effect", "Core effect"], [
-        ("Begin operation", "No change", "Set pending, transaction and deadline"),
-        ("Current request applied", "Apply target resources and QoS", "Retain prior committed record"),
-        ("Current completion processed", "No change", "Commit target and clear pending"),
-        ("Current operation times out", "Retain applied state", "Retain old record and clear pending"),
-        ("Stale request or completion", "Reject stale request", "Reject stale completion"),
-        ("Idle and resume control", "Deactivate then restore access", "Retain session, update access flag"),
-        ("Version guarded recovery", "Copy committed authorization", "Keep committed state"),
-    ], [2.0, 2.25, 2.65])
-    p("Setup targets (session=true, resources=true, QoS=1). Modification requires a committed session and increments its abstract QoS identifier. Release targets (false,false,0). Each session has at most one pending operation. A local cell change does not require Core cell equality and is only a negative control.")
+    p(
+        "The RAN has ABSENT or APPLIED(q) access resources, with CONNECTED or IDLE access state in the implemented controls. The Core has STABLE, SETUP_PENDING, MODIFY_PENDING and RELEASE_PENDING control states plus a committed session/resource/QoS record. Initially both records are inactive. RRC is already CONNECTED because radio attachment precedes the session workflow. RRC_INACTIVE is outside this prototype."
+    )
+    table(
+        ["Event", "RAN effect", "Core effect"],
+        [
+            ("Begin operation", "No change", "Set pending, transaction and deadline"),
+            (
+                "Current request applied",
+                "Apply target resources and QoS",
+                "Retain prior committed record",
+            ),
+            ("Current completion processed", "No change", "Commit target and clear pending"),
+            (
+                "Current operation times out",
+                "Retain applied state",
+                "Retain old record and clear pending",
+            ),
+            ("Stale request or completion", "Reject stale request", "Reject stale completion"),
+            (
+                "Idle and resume control",
+                "Deactivate then restore access",
+                "Retain session, update access flag",
+            ),
+            ("Version guarded recovery", "Copy committed authorization", "Keep committed state"),
+        ],
+        [2.0, 2.25, 2.65],
+    )
+    p(
+        "Setup targets (session=true, resources=true, QoS=1). Modification requires a committed session and increments its abstract QoS identifier. Release targets (false,false,0). Each session has at most one pending operation. A local cell change does not require Core cell equality and is only a negative control."
+    )
     h("Interface and observability assumptions")
-    p("N2 carries RAN-AMF control signaling. N3 is the gNB-UPF user plane, while N4 is SMF-UPF control signaling. This simulator combines Core responsibilities and does not implement a separate N4 or UPF state machine. Its input adapter supplies complete timestamped snapshots, which cannot generally be reconstructed from arbitrary packet captures alone.")
+    p(
+        "N2 carries RAN-AMF control signaling. N3 is the gNB-UPF user plane, while N4 is SMF-UPF control signaling. This simulator combines Core responsibilities and does not implement a separate N4 or UPF state machine. Its input adapter supplies complete timestamped snapshots, which cannot generally be reconstructed from arbitrary packet captures alone."
+    )
 
     page("Evaluation and detector results")
     h("Ground truth and metric definitions")
@@ -385,21 +411,39 @@ def build():
     )
 
     page("Detection lead time and conclusions")
-    p("Lead time equals the first subsequent failed consistency-probe time in the same truth episode minus the alarm time. It is conditional on a qualifying future failed probe. An absent value means no qualifying probe, not zero delay. The table uses recovery disabled so intervention cannot remove the observation being compared.")
-    timing=[]
-    for label,scenario in [("Setup completion failure","setup_loss_ack"),("QoS completion failure","loss_ack"),("Release completion failure","release_loss_ack"),("Queued load","high_load"),("Observation outage","observation_outage")]:
-        r=select(scenario)
-        lead=r["mean_lead_time_ms"]
-        timing.append((label,f"{r['mean_detection_delay_ms']:.2f}","N/A" if lead is None else f"{lead:.2f}"))
-    table(["Scenario", "Mean delay ms", "Mean lead ms"],timing,[3.5,1.7,1.7])
+    p(
+        "Lead time equals the first subsequent failed consistency-probe time in the same truth episode minus the alarm time. It is conditional on a qualifying future failed probe. An absent value means no qualifying probe, not zero delay. The table uses recovery disabled so intervention cannot remove the observation being compared."
+    )
+    timing = []
+    for label, scenario in [
+        ("Setup completion failure", "setup_loss_ack"),
+        ("QoS completion failure", "loss_ack"),
+        ("Release completion failure", "release_loss_ack"),
+        ("Queued load", "high_load"),
+        ("Observation outage", "observation_outage"),
+    ]:
+        r = select(scenario)
+        lead = r["mean_lead_time_ms"]
+        timing.append(
+            (label, f"{r['mean_detection_delay_ms']:.2f}", "N/A" if lead is None else f"{lead:.2f}")
+        )
+    table(["Scenario", "Mean delay ms", "Mean lead ms"], timing, [3.5, 1.7, 1.7])
     h("Main findings")
-    a,b=select("loss_ack"),select("loss_ack",True)
-    p(f"In the QoS completion-failure scenario the aware monitor detected {a['tp']} of {a['tp']+a['fn']} modeled episodes with {a['fp']} false alarms. Recovery reduced failed consistency probes from {a['failed_probes']} to {b['failed_probes']} out of 720, and total contradiction exposure from {a['mismatch_exposure_ms']:.0f} to {b['mismatch_exposure_ms']:.0f} session-ms. These totals cover 40 paired seeds, not one UE trace.")
-    p("Benign delay produced no aware false alarms. The fixed 25 ms baseline falsely flagged 225 of 240 negative sessions (93.75%). This demonstrates the benefit of procedure evidence for the declared workload. It is not a comparison with the base paper's trained model, and it does not establish accuracy on operator traces.")
+    a, b = select("loss_ack"), select("loss_ack", True)
+    p(
+        f"In the QoS completion-failure scenario the aware monitor detected {a['tp']} of {a['tp'] + a['fn']} modeled episodes with {a['fp']} false alarms. Recovery reduced failed consistency probes from {a['failed_probes']} to {b['failed_probes']} out of 720, and total contradiction exposure from {a['mismatch_exposure_ms']:.0f} to {b['mismatch_exposure_ms']:.0f} session-ms. These totals cover 40 paired seeds, not one UE trace."
+    )
+    p(
+        "Benign delay produced no aware false alarms. The fixed 25 ms baseline falsely flagged 225 of 240 negative sessions (93.75%). This demonstrates the benefit of procedure evidence for the declared workload. It is not a comparison with the base paper's trained model, and it does not establish accuracy on operator traces."
+    )
     h("Conclusion")
-    p("The prototype meets the scoped goal of detecting stable contradictions in an abstract RAN-Core model and evaluating bounded reconciliation. The evidence supports fewer false alarms under valid delay and lower mismatch exposure after recovery. Actual call-drop prevention, full handover, individual QoS flows and production overhead remain future validation work. A timeout alone cannot distinguish permanent failure from unbounded delay without additional assumptions or observations.")
+    p(
+        "The prototype meets the scoped goal of detecting stable contradictions in an abstract RAN-Core model and evaluating bounded reconciliation. The evidence supports fewer false alarms under valid delay and lower mismatch exposure after recovery. Actual call-drop prevention, full handover, individual QoS flows and production overhead remain future validation work. A timeout alone cannot distinguish permanent failure from unbounded delay without additional assumptions or observations."
+    )
     h("Complexity and next validation")
-    p("The verifier stores O(S) snapshots for S sessions and a fixed number of rules. Its current candidate scans can take O(S squared) work per monitor tick in the worst case. Six sessions per benchmark run do not establish large-scale performance. Next steps are indexed candidate storage, measured telemetry adapters, independent protocol-state labels, clock-skew tests and user-plane traffic measurements.")
+    p(
+        "The verifier stores O(S) snapshots for S sessions and a fixed number of rules. Its current candidate scans can take O(S squared) work per monitor tick in the worst case. Six sessions per benchmark run do not establish large-scale performance. Next steps are indexed candidate storage, measured telemetry adapters, independent protocol-state labels, clock-skew tests and user-plane traffic measurements."
+    )
 
     page("Viva answers and demonstration guide")
     questions = [
