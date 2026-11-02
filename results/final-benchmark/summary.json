@@ -24,7 +24,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.997412499947586
+    "mean_wall_ms": 7.641542499550269
   },
   {
     "scenario": "clean",
@@ -51,7 +51,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.55701250001357
+    "mean_wall_ms": 7.247302501491504
   },
   {
     "scenario": "clean",
@@ -78,7 +78,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.752327499987132
+    "mean_wall_ms": 7.704247500078054
   },
   {
     "scenario": "clean",
@@ -105,7 +105,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.723734999991393
+    "mean_wall_ms": 7.612315001824754
   },
   {
     "scenario": "delay",
@@ -132,7 +132,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.877904999976181
+    "mean_wall_ms": 7.075517499470152
   },
   {
     "scenario": "delay",
@@ -159,7 +159,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.9436724999718535
+    "mean_wall_ms": 7.174500000110129
   },
   {
     "scenario": "delay",
@@ -186,7 +186,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.791675000010855
+    "mean_wall_ms": 6.989082500876975
   },
   {
     "scenario": "delay",
@@ -213,7 +213,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.698462500014557
+    "mean_wall_ms": 7.071979998727329
   },
   {
     "scenario": "loss_request",
@@ -240,7 +240,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.792625000036878
+    "mean_wall_ms": 6.9206650001433445
   },
   {
     "scenario": "loss_request",
@@ -267,7 +267,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.686734999971122
+    "mean_wall_ms": 6.81304999961867
   },
   {
     "scenario": "loss_request",
@@ -294,7 +294,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.783597500054839
+    "mean_wall_ms": 6.930427500265068
   },
   {
     "scenario": "loss_request",
@@ -321,7 +321,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.763624999973672
+    "mean_wall_ms": 6.923432499024784
   },
   {
     "scenario": "loss_ack",
@@ -348,7 +348,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 7.199207499979821
+    "mean_wall_ms": 7.330234999608365
   },
   {
     "scenario": "loss_ack",
@@ -375,7 +375,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 7.053365000069789
+    "mean_wall_ms": 7.109217498509679
   },
   {
     "scenario": "loss_ack",
@@ -402,7 +402,7 @@
     "mean_detection_delay_ms": 20.934131736526947,
     "mean_lead_time_ms": 18.353293413173652,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 7.326572500062412
+    "mean_wall_ms": 7.213929999488755
   },
   {
     "scenario": "loss_ack",
@@ -429,7 +429,7 @@
     "mean_detection_delay_ms": 20.934131736526947,
     "mean_lead_time_ms": 2.8762886597938144,
     "mean_recovery_ms": 18.162045128193565,
-    "mean_wall_ms": 7.077817499953198
+    "mean_wall_ms": 7.167072499214555
   },
   {
     "scenario": "setup_loss_ack",
@@ -456,7 +456,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.962365000003956
+    "mean_wall_ms": 7.4753450015123235
   },
   {
     "scenario": "setup_loss_ack",
@@ -483,7 +483,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 7.010787500007609
+    "mean_wall_ms": 7.575147501484025
   },
   {
     "scenario": "setup_loss_ack",
@@ -510,7 +510,7 @@
     "mean_detection_delay_ms": 21.868263473053894,
     "mean_lead_time_ms": 138.14970059880238,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 7.099684999991496
+    "mean_wall_ms": 7.524054998430074
   },
   {
     "scenario": "setup_loss_ack",
@@ -537,7 +537,7 @@
     "mean_detection_delay_ms": 21.868263473053894,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": 18.16204512819357,
-    "mean_wall_ms": 6.899892499973248
+    "mean_wall_ms": 7.509457498963457
   },
   {
     "scenario": "release_loss_ack",
@@ -564,7 +564,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 7.067004999987603
+    "mean_wall_ms": 7.336889999351115
   },
   {
     "scenario": "release_loss_ack",
@@ -591,7 +591,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.888910000054693
+    "mean_wall_ms": 7.065267498182948
   },
   {
     "scenario": "release_loss_ack",
@@ -618,7 +618,7 @@
     "mean_detection_delay_ms": 22.347305389221557,
     "mean_lead_time_ms": 22.67065868263473,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 7.234332499967877
+    "mean_wall_ms": 7.064202500623651
   },
   {
     "scenario": "release_loss_ack",
@@ -645,7 +645,7 @@
     "mean_detection_delay_ms": 22.347305389221557,
     "mean_lead_time_ms": 14.731707317073171,
     "mean_recovery_ms": 18.162045128193565,
-    "mean_wall_ms": 7.090100000004895
+    "mean_wall_ms": 7.2997824994672555
   },
   {
     "scenario": "reorder_observations",
@@ -672,7 +672,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 7.20746499997631
+    "mean_wall_ms": 7.568762501614401
   },
   {
     "scenario": "reorder_observations",
@@ -699,7 +699,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.951242499974342
+    "mean_wall_ms": 7.515957498981152
   },
   {
     "scenario": "reorder_observations",
@@ -726,7 +726,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.988862499997595
+    "mean_wall_ms": 7.328072500604321
   },
   {
     "scenario": "reorder_observations",
@@ -753,7 +753,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.959394999989854
+    "mean_wall_ms": 7.474260002345545
   },
   {
     "scenario": "high_load",
@@ -780,7 +780,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 7.399624999993648
+    "mean_wall_ms": 7.203372499498073
   },
   {
     "scenario": "high_load",
@@ -807,7 +807,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 7.575049999968542
+    "mean_wall_ms": 7.1933024999452755
   },
   {
     "scenario": "high_load",
@@ -834,7 +834,7 @@
     "mean_detection_delay_ms": 22.48051948051948,
     "mean_lead_time_ms": 98.43506493506493,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 7.531307499994
+    "mean_wall_ms": 7.069689999116235
   },
   {
     "scenario": "high_load",
@@ -861,7 +861,7 @@
     "mean_detection_delay_ms": 22.376623376623378,
     "mean_lead_time_ms": 10.222222222222221,
     "mean_recovery_ms": 18.201515644705776,
-    "mean_wall_ms": 7.5301050000120995
+    "mean_wall_ms": 6.993080001484486
   },
   {
     "scenario": "observation_outage",
@@ -888,7 +888,7 @@
     "mean_detection_delay_ms": 71.78443113772455,
     "mean_lead_time_ms": 2.2335329341317367,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.333524999968176
+    "mean_wall_ms": 6.172584999512765
   },
   {
     "scenario": "observation_outage",
@@ -915,7 +915,7 @@
     "mean_detection_delay_ms": 92.0,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.274549999932333
+    "mean_wall_ms": 6.004875000871834
   },
   {
     "scenario": "observation_outage",
@@ -942,7 +942,7 @@
     "mean_detection_delay_ms": 84.35928143712574,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.162159999973937
+    "mean_wall_ms": 5.950684999697842
   },
   {
     "scenario": "observation_outage",
@@ -969,7 +969,7 @@
     "mean_detection_delay_ms": 84.35928143712574,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": 15.872794737124044,
-    "mean_wall_ms": 6.342587499966612
+    "mean_wall_ms": 6.0513900010846555
   },
   {
     "scenario": "idle_resume",
@@ -996,7 +996,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.879960000060237
+    "mean_wall_ms": 6.94747250090586
   },
   {
     "scenario": "idle_resume",
@@ -1023,7 +1023,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.703749999985575
+    "mean_wall_ms": 6.96869999919727
   },
   {
     "scenario": "idle_resume",
@@ -1050,7 +1050,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.99048749999065
+    "mean_wall_ms": 7.110092499351595
   },
   {
     "scenario": "idle_resume",
@@ -1077,7 +1077,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.726169999956255
+    "mean_wall_ms": 6.7769450000923825
   },
   {
     "scenario": "intra_gnb",
@@ -1104,7 +1104,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.802552499982539
+    "mean_wall_ms": 6.82822500129987
   },
   {
     "scenario": "intra_gnb",
@@ -1131,7 +1131,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.674515000020165
+    "mean_wall_ms": 6.681597499846248
   },
   {
     "scenario": "intra_gnb",
@@ -1158,7 +1158,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.6788250000399785
+    "mean_wall_ms": 6.809609998163069
   },
   {
     "scenario": "intra_gnb",
@@ -1185,7 +1185,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 6.647722499997144
+    "mean_wall_ms": 6.7878949994337745
   },
   {
     "scenario": "recovery_failure",
@@ -1212,7 +1212,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 7.267419999959657
+    "mean_wall_ms": 7.392895000157296
   },
   {
     "scenario": "recovery_failure",
@@ -1239,7 +1239,7 @@
     "mean_detection_delay_ms": null,
     "mean_lead_time_ms": null,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 7.305820000010499
+    "mean_wall_ms": 7.552375001250766
   },
   {
     "scenario": "recovery_failure",
@@ -1266,7 +1266,7 @@
     "mean_detection_delay_ms": 20.934131736526947,
     "mean_lead_time_ms": 18.353293413173652,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 7.169657499980531
+    "mean_wall_ms": 7.4440475003939355
   },
   {
     "scenario": "recovery_failure",
@@ -1293,6 +1293,6 @@
     "mean_detection_delay_ms": 20.934131736526947,
     "mean_lead_time_ms": 18.353293413173652,
     "mean_recovery_ms": null,
-    "mean_wall_ms": 7.238877500049057
+    "mean_wall_ms": 7.576287500342005
   }
 ]

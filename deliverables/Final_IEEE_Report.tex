@@ -114,7 +114,7 @@ Core authority is a modeling choice for these fields. This adapter is not a stan
 
 \section{Implementation and Experimental Setup}
 \subsection{Software and Scenario Design}
-The prototype uses Python and SimPy for virtual-time scheduling, with a Streamlit demonstration interface \cite{simpy,streamlit}. Separate modules implement the context model, simulator, verifier, metrics, command-line experiments and plots. The dashboard displays events, state views and downloadable results.
+The prototype uses Python and SimPy for virtual-time scheduling, with a Streamlit demonstration interface \cite{simpy,streamlit}. Separate modules implement the context model, simulator, verifier, metrics, command-line experiments and plots. The dashboard summarizes detection and recovery metrics, filters per-session event timelines, compares configurations against the precomputed benchmark, and exports run results.
 
 The twelve scenarios are clean operation, benign delay, request-processing failure, QoS/setup/release completion-processing failure, reordered observations, queued high load, observation outage, access idle/resume, local cell change, and unavailable recovery. Request-processing failure can prevent service without creating a contradiction; injection is therefore not itself a positive ground-truth label.
 
@@ -180,7 +180,7 @@ QoS mismatch exposure falls from 15,698 to 6,192 session-ms, a 60.56\% reduction
 \subsection{Timing Sensitivity and Software Checks}
 The held-out suite varies polling over 5, 15, 30 and 90 ms and grace over 0, 12 and 24 ms for QoS completion failure, benign delay and observation reordering. With 12 ms grace, QoS completion failure yields 77 detected episodes and zero misses at each polling interval. Mean detection delays are 15.69, 21.61, 23.48 and 23.51 ms respectively. Event-triggered snapshots remain enabled, so polling interval is not total observation latency.
 
-The implementation passes 48 behavioral and integration tests, including dashboard tests. Recorded core line coverage is 98.9\%. Code and type checks pass. A review fixed source-hash collection to resolve from the package location, enabling experiment provenance when launched from a different working directory. A Windows launcher invokes the existing environment directly. These software checks support reproducibility, not 3GPP certification.
+The implementation passes 49 behavioral and integration tests, including dashboard tests. Recorded core line coverage is 98.9\%. Code and type checks pass. The tests were rerun on 30 October 2026. A review fixed source-hash collection to resolve from the package location, enabling experiment provenance when launched from a different working directory. A Windows launcher invokes the existing environment directly. These software checks support reproducibility, not 3GPP certification.
 
 \section{Limitations and Threats to Validity}
 The simulator abstracts resource transactions and does not encode full NAS, NGAP, QoS-flow/DRB mapping, independent N4 behavior or handover signaling. RRC access controls are limited. Commit policy, timeouts, delay distributions and Core authority are declared experimental assumptions.

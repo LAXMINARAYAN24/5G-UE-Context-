@@ -239,7 +239,10 @@ def build():
                 "Query, check versions, reconcile and verify with bounded retries",
             ),
             ("pandas and Matplotlib", "Aggregate actual measurements and plot comparisons"),
-            ("Streamlit", "Show observed profiles, events, alarms and downloadable evidence [9]"),
+            (
+                "Streamlit",
+                "Summarize metrics, filter session events, compare benchmark configurations and export results [9]",
+            ),
             ("uv Ruff ty pytest", "Lock dependencies, check code and test behavior [10]"),
         ],
         [1.8, 5.1],
@@ -403,7 +406,7 @@ def build():
     h("Verified implementation status")
     percentage = coverage["totals"]["percent_covered"]
     p(
-        f"The implementation passes 48 behavioral and integration tests, including the Streamlit dashboard. Line coverage for the core package is {percentage:.1f}%. The existing behavioral and dashboard tests were rerun on 15 October 2026. The exported main and sensitivity experiments contain 2,640 runs. Local wall time is a software-runtime measurement, not a production detection benchmark. The included GitHub workflow has not been executed on GitHub."
+        f"The implementation passes 49 behavioral and integration tests, including the updated Streamlit dashboard. Line coverage for the core package is {percentage:.1f}%. Behavioral and dashboard tests were rerun on 30 October 2026. The exported main and sensitivity experiments contain 2,640 runs. Local wall time is a software-runtime measurement, not a production detection benchmark. The included GitHub workflow has not been executed on GitHub."
     )
     h("What would make the next validation stronger")
     p(

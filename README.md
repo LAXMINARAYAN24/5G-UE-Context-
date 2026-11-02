@@ -39,7 +39,12 @@ uv run streamlit run app.py
 ```
 
 The app prints its local URL. Choose a scenario, detector, and recovery setting, then
-click **Run experiment**. Download the complete trace and results as JSON from the app.
+click **Run experiment**. The overview shows episode-based detection and recovery KPIs;
+if you change a setting without rerunning, the dashboard warns that the displayed
+results are from the previous configuration. Use **Session explorer** to filter a
+UE/session timeline by event type and virtual time. **Benchmark comparison** reads
+the checked-in `results/final-benchmark/summary.csv` and does not launch benchmark
+jobs. Download the complete trace and results as JSON from the app.
 
 ```sh
 # Reproduce the default example with recovery
@@ -140,4 +145,3 @@ The two KPI anomaly papers from the proposal are supporting references. This is 
 engineering extension relative to those references, not a claim of worldwide novelty.
 Full-paper replication, operator traces, hardware tests, and production recovery remain
 outside this prototype. The CI workflow (`.github/workflows/check.yml`) runs lint, type checks and tests on every push.
-

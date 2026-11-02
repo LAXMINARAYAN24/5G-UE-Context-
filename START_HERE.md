@@ -25,7 +25,7 @@ the machine-specific `.venv` folder.
 4. Inspect the mismatched profiles, alarm and recovery events, then download JSON.
 5. Show `observation_outage` or `recovery_failure` to explain why recovery can fail.
 
-Run `run.ps1 test` to execute the 48 tests. Run `run.ps1 benchmark` for the
+Run `run.ps1 test` to execute the 49 tests. Run `run.ps1 benchmark` for the
 1,920-run suite and `run.ps1 sensitivity` for 720 additional runs.
 
 ## Evidence and scope
@@ -47,4 +47,3 @@ folder and added a tested Windows launcher. Benchmarks were reproduced rather th
 invented. The report was exported through Microsoft Word because LibreOffice was
 unavailable, then all pages were visually inspected. Slides were rendered and
 structurally validated, including editable chart data.
-
