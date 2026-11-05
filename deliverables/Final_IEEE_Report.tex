@@ -3,6 +3,8 @@
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx}
 \usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
 \setlength{\tabcolsep}{4.5pt}
 \usepackage{url}
 \usepackage[hidelinks]{hyperref}
@@ -27,16 +29,21 @@ Fifth-generation mobile networks distribute session and resource context between
 \end{IEEEkeywords}
 
 \section{Introduction}
-The 5G architecture distributes responsibilities among the gNB, Access and Mobility Management Function (AMF), Session Management Function (SMF), and User Plane Function (UPF). Session establishment, modification and release involve coordinated resource changes \cite{procedures,ngap}. A node can apply a requested configuration before another node completes the corresponding operation. If completion processing fails, their committed views may disagree.
+\subsection{Background of 5G UE Context}
+The 5G architecture distributes responsibilities among the gNB, Access and Mobility Management Function (AMF), Session Management Function (SMF), and User Plane Function (UPF). Session establishment, modification and release involve coordinated resource changes \cite{procedures,ngap}.
+
+\subsection{Problem of RAN--Core Desynchronization}
+A node can apply a requested configuration before another node completes the corresponding operation. If completion processing fails, their committed views may disagree.
 
 This problem must be distinguished from ordinary packet loss. NGAP signaling uses reliable SCTP transport \cite{transport}. Our fault model therefore targets application request or completion handling and delayed telemetry. It does not assume that an isolated lost SCTP packet permanently removes a signaling message. N2 connects RAN and AMF control functions; N3 is the gNB--UPF user plane; N4 carries SMF--UPF control. The prototype combines Core responsibilities and does not implement an independent N4 or UPF state machine.
 
 Aggregate monitoring can identify abnormal operational behavior, but a per-session consistency checker asks a more specific question: do the observed applied and authorized resource states satisfy a declared relationship? During valid procedures, temporary differences are expected. A detector that merely compares snapshots, or waits a fixed short time, can mistake these transitions for faults.
 
-This project contributes an executable context model, an explainable verifier and a reproducible evaluation of bounded reconciliation. We make no claim of worldwide novelty or deployment readiness.
+\subsection{Project Contributions}
+This project contributes (i) an executable timed model of per-session RAN and Core context, (ii) an explainable verifier that separates stable contradictions from valid in-progress procedures, (iii) a bounded, verified reconciliation procedure, and (iv) a reproducible paired evaluation over twelve fault and control scenarios. We make no claim of worldwide novelty or deployment readiness.
 
-\section{Literature Review}
-\subsection{Proposal Base Paper}
+\section{Related Work}
+\subsection{KPI Anomaly Detection (Proposal Base Paper)}
 The proposal selected Cho et al.'s framework for AI-based large-scale time-series anomaly detection in 5G Core networks \cite{cho}. Its monitoring task concerns KPI streams. Point-level anomaly amplification improves sensitivity to early deviations, while distribution-aware thresholds adapt the decision rule to individual streams. This motivates timely monitoring but differs from our per-session semantic task.
 
 Table~\ref{tab:comparison} compares scope, not reproduced performance. We do not train the cited model or claim superiority on general anomalies.
@@ -52,10 +59,45 @@ Evaluation & Operator-network study & Synthetic controlled faults\\
 Recovery & Not reproduced here & Custom reconciliation\\\bottomrule
 \end{tabular}
 \end{table}
-\subsection{Consistency and Protocol References}
-Sid-Otmane et al. discuss data consistency in the 5G specification \cite{consistency}. This provides additional context for treating distributed UE state as a correctness problem. Our implementation is not a replication of that paper. 3GPP TS 23.502 and TS 38.413 provide procedure background \cite{procedures,ngap}; TS 38.300 provides access and mobility context \cite{ran}. The prototype abstracts these references rather than implementing all normative transitions.
+\subsection{Data Consistency in the 5G Specification}
+Sid-Otmane et al. discuss data consistency in the 5G specification \cite{consistency}. This provides additional context for treating distributed UE state as a correctness problem. Our implementation is not a replication of that paper.
 
-\section{System Model and Methodology}
+\subsection{3GPP Procedure References}
+3GPP TS 23.502 and TS 38.413 provide procedure background \cite{procedures,ngap}; TS 38.300 provides access and mobility context \cite{ran}. The prototype abstracts these references rather than implementing all normative transitions.
+
+\section{System Design}
+\subsection{Architecture and Overview in Plain Words}
+In 5G, both the radio side (RAN) and the Core keep a record of every user session, and the two records should agree. If a message is handled late or never processed, they can drift apart, for example when the RAN holds resources that the Core no longer knows about. The prototype simulates this. Each session is set up, modified and released while faults are injected on purpose. A monitor sees only periodic snapshots of both records and raises an alarm when they disagree for long enough to rule out a normal in-progress procedure. A recovery step then copies the Core's committed values onto the RAN and checks that the two now match. A separate ``oracle'' reads the true node states and marks when a real disagreement starts and ends, so the alarms can be scored fairly. Fig.~\ref{fig:arch} shows how the components connect.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[>=Stealth, font=\scriptsize,
+ box/.style={draw, rounded corners=2pt, align=center, text width=2.9cm, minimum height=0.75cm},
+ wide/.style={box, text width=8.0cm},
+ mid/.style={box, text width=4.6cm}]
+\node[wide] (life) at (4.3,0) {UE/session lifecycle: setup $\rightarrow$ modify $\rightarrow$ release\\fault injector perturbs requests, completions and telemetry};
+\node[box] (core) at (2.0,-1.8) {Core\\committed state};
+\node[box] (ran) at (6.6,-1.8) {RAN\\applied state};
+\node[mid] (chan) at (4.3,-3.4) {Snapshot channel\\sequence number, capture time\\delay, reordering, outage};
+\node[box] (ver) at (6.6,-5.0) {Verifier\\(aware guards)};
+\node[box] (orc) at (2.0,-5.0) {Oracle\\reads true states};
+\node[box] (rec) at (6.6,-6.6) {Recovery adapter\\query, check, reconcile};
+\node[box] (met) at (2.0,-6.6) {Metrics\\TP/FP, delay, recovery};
+\draw[->] (core.north |- life.south) -- (core.north);
+\draw[->] (ran.north |- life.south) -- (ran.north);
+\draw[->] (core.south) -- (core.south |- chan.north);
+\draw[->] (ran.south) -- (ran.south |- chan.north);
+\draw[->] (chan.south -| ver.north) -- (ver.north);
+\draw[->] (ver.south) -- (rec.north);
+\draw[->,dashed] (core.west) -- ++(-0.3,0) |- (orc.west);
+\draw[->] (orc.south) -- (met.north);
+\draw[->] (rec.west) -- node[above,font=\tiny,align=center]{alarms,\\recovery log} (met.east);
+\draw[->,dashed] (rec.east) -- ++(0.4,0) |- (ran.east);
+\end{tikzpicture}
+\caption{Architecture of the simulated prototype. The verifier sees only snapshots. The dashed left path is the evaluation-only oracle; the dashed right path is the recovery write-back to the RAN.}
+\label{fig:arch}
+\end{figure}
+
 \subsection{Scope and State Representation}
 For each key $k=(\mathrm{UE},\mathrm{session})$, the simulator stores independent RAN and Core records
 \begin{equation}
@@ -67,7 +109,7 @@ The model is a timed extended finite-state machine (EFSM). The RAN resource cont
 
 Both records initially have no session or resources and QoS zero. RRC begins CONNECTED because radio attachment precedes the modeled session workflow. The access controls exercise CONNECTED and IDLE; RRC\_INACTIVE is not implemented. A logical session can persist while access resources are inactive. A local cell change is a negative control, not a full handover procedure.
 
-\subsection{Transition Relation}
+\subsection{Session Procedures and Transitions}
 The Core begins an operation by allocating a transaction and deadline. Setup targets $(s,a,q)=(1,1,1)$; modification requires a committed session and targets $(1,1,q_C+1)$; release targets $(0,0,0)$. The RAN applies a current request, and the Core commits its target only after processing a current completion. At timeout, the Core clears pending state and retains its previous committed record. The RAN retains any configuration already applied. Table~\ref{tab:transitions} specifies the principal transitions.
 
 \begin{table}[t]
@@ -85,7 +127,32 @@ Recovery & Copy authorization & Retain committed record\\\bottomrule
 \end{tabular}
 \end{table}
 
-Each session has at most one pending operation. Commit and timeout semantics are experimental choices, not mandatory 3GPP rollback behavior.
+Each session has at most one pending operation. Commit and timeout semantics are experimental choices, not mandatory 3GPP rollback behavior. Fig.~\ref{fig:timeline} traces one lost-completion case from fault to recovery.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[>=Stealth, font=\scriptsize,
+ lane/.style={draw, rounded corners=2pt, minimum height=0.6cm, minimum width=1.8cm},
+ note/.style={draw, fill=white, font=\tiny, align=center, inner sep=1.5pt},
+ lbl/.style={font=\tiny, align=center, above}]
+\node[lane] at (1.0,0) {Core};
+\node[lane] at (4.3,0) {RAN};
+\node[lane] at (7.6,0) {Monitor};
+\foreach \x in {1.0,4.3,7.6} \draw[dashed] (\x,-0.3) -- (\x,-7.0);
+\draw[->] (1.0,-1.0) -- node[lbl]{request; Core pending,\\deadline $+110$ ms} (4.3,-1.0);
+\node[note] at (4.3,-1.7) {RAN applies target};
+\draw[->] (4.3,-2.4) -- node[lbl]{completion\\not processed} node[pos=0.8,fill=white,inner sep=0pt]{$\times$} (1.0,-2.4);
+\node[note] at (1.0,-3.2) {timeout:\\pending cleared,\\old record kept};
+\draw[->] (1.0,-4.1) -- node[lbl]{snapshots} (7.6,-4.1);
+\draw[->] (4.3,-4.6) -- node[lbl]{snapshot} (7.6,-4.6);
+\node[note] at (1.0,-5.3) {contradiction exists\\(oracle episode)};
+\node[note] at (7.6,-5.3) {mismatch lasts $\ge$12 ms:\\alarm};
+\draw[->,dashed] (7.6,-6.0) -- node[lbl]{reconcile to Core} (4.3,-6.0);
+\node[note] at (4.3,-6.7) {RAN = Core\\verified};
+\end{tikzpicture}
+\caption{Message timeline for the \texttt{loss\_ack} scenario. The RAN applies a change, the completion is not processed, the Core times out and keeps its old record, the monitor raises an alarm, and recovery restores agreement.}
+\label{fig:timeline}
+\end{figure}
 
 \subsection{Coupling Invariants}
 The verifier evaluates three predicates:
@@ -96,33 +163,108 @@ I_3 &= a_R \land a_C \land (q_R \ne q_C).
 \end{align}
 $I_1$ denotes an orphan RAN resource; $I_2$ an access-resource mismatch; and $I_3$ a QoS-profile mismatch. The orphan predicate takes precedence over a resource mismatch. Both predicates can be absent when access is inactive and the Core retains a logical session. Local cell equality is not an invariant. Absence of these predicates means consistency only with respect to these modeled relationships.
 
-\subsection{Observation-Based Verification}
+\subsection{Fault Scenarios}
+Faults act on application request or completion handling and on telemetry, not on SCTP transport. Table~\ref{tab:scenarios} lists what each of the twelve scenarios injects or controls. A fault is applied only to sessions selected for it (probability 0.7 per session).
+\begin{table}[t]
+\caption{Fault and Control Scenarios}
+\label{tab:scenarios}\centering\footnotesize
+\begin{tabular}{p{0.40\columnwidth}p{0.50\columnwidth}}
+\toprule Scenario & What it injects or controls\\\midrule
+\texttt{clean} & No fault (control)\\
+\texttt{delay} & Valid slow legs, 18--42 ms\\
+\texttt{loss\_request} & Modify request not processed\\
+\texttt{loss\_ack} & Modify completion not processed\\
+\texttt{setup\_loss\_ack} & Setup completion not processed\\
+\texttt{release\_loss\_ack} & Release completion not processed\\
+\texttt{reorder\_observations} & Snapshots delayed by up to 45 ms more\\
+\texttt{high\_load} & Shared three-worker queue adds delay\\
+\texttt{observation\_outage} & Snapshots dropped 135--325 ms; completion lost\\
+\texttt{idle\_resume} & Access idle then resumed (control)\\
+\texttt{intra\_gnb} & Local cell change only (control)\\
+\texttt{recovery\_failure} & Completion lost; recovery adapter unavailable\\\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Observation Channel and Snapshots}
+The verifier does not read node memory. Each node publishes complete snapshots containing the session key, side, a node sequence number, the capture time, the last-change time and the full context record. Snapshots are published every polling interval (15 ms by default) and also at each procedure event. Delivery takes 0.5--3 ms; the reordering scenario adds up to 45 ms, and the outage scenario drops snapshots between 135 and 325 ms. The verifier receives only these snapshots.
+
+\section{Proposed Proactive Controller}
+The controller combines a verifier and a recovery adapter. It is proactive in the sense that it monitors every session continuously and starts bounded reconciliation automatically after an alarm, without operator action and before later procedures or probes depend on the diverged state. It does not predict faults before they occur.
+
+\subsection{Snapshot Ingestion and Ordering}
 The detector receives complete snapshots containing the key, side, node sequence number, capture timestamp and context record. It never receives injected-fault flags or oracle labels. Each new snapshot replaces the previous view only if its sequence number is greater.
 
-The aware mode applies the following guards. Both sides must be present and no more than 60 ms old. Their stable intervals must overlap:
+\subsection{Guards and Persistence}
+The aware mode applies the following guards (Fig.~\ref{fig:verifier}). Both sides must be present and no more than 60 ms old. Their stable intervals must overlap:
 \begin{equation}
 \min(t^{cap}_R,t^{cap}_C)\geq\max(t^{chg}_R,t^{chg}_C).
 \end{equation}
 A pending Core operation suppresses evidence before its deadline. If a pending view remains after the deadline, a Core snapshot captured at or after that deadline is required. Accepted contradictory evidence must then persist for a default 12 ms. The monitor emits one alarm per active session/rule candidate and records both contexts and timing evidence.
 
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[>=Stealth, font=\scriptsize,
+ box/.style={draw, rounded corners=2pt, align=center, text width=5.0cm, minimum height=0.7cm},
+ side/.style={box, text width=1.7cm, dashed}]
+\node[box] (b1) at (2.9,0) {Ingest snapshot; keep it only if its sequence number is newer};
+\node[box] (b2) at (2.9,-1.3) {Both views present and each at most 60 ms old?};
+\node[box] (b3) at (2.9,-2.6) {Stable intervals overlap?\\$\min t^{cap}\ge\max t^{chg}$};
+\node[box] (b4) at (2.9,-3.9) {Core operation pending? Wait for its deadline and a post-deadline Core snapshot};
+\node[box] (b5) at (2.9,-5.2) {Evaluate $I_1$, $I_2$, $I_3$ on the RAN and Core contexts};
+\node[box] (b6) at (2.9,-6.5) {Contradiction persisted 12 ms?\\emit one alarm per session and rule};
+\node[side] (rs) at (7.5,-2.6) {Reset evidence\\(state unknown)};
+\foreach \a/\b in {b1/b2,b2/b3,b3/b4,b4/b5,b5/b6} \draw[->] (\a.south) -- (\b.north);
+\draw[->] (b2.east) -| (rs.north);
+\draw[->] (b3.east) -- (rs.west);
+\draw[->] (b4.east) -| (rs.south);
+\end{tikzpicture}
+\caption{Decision pipeline of the aware verifier. A failed freshness, alignment or pending check resets accumulated evidence instead of declaring consistency.}
+\label{fig:verifier}
+\end{figure}
+
 Stale or incompatible observations reset evidence. They represent unknown state, not a proof of consistency. The common simulator clock is an explicit assumption. With unbounded delay and no additional observations, timeout alone cannot establish permanent message loss. Our detector relies on the modeled committed-state semantics and telemetry guarantees.
 
 \subsection{Recovery Adapter}
-On an alarm, a custom adapter queries both nodes, refuses a pending operation, and checks versions before writing. It reconciles the RAN session, resource and QoS fields to the committed Core authorization, then queries again to verify convergence. Query and actuation delays each range from 5 to 10 ms, followed by a 3 ms verification delay. A job makes at most two attempts.
+On an alarm, a custom adapter queries both nodes, refuses a pending operation, and checks versions before writing. It reconciles the RAN session, resource and QoS fields to the committed Core authorization, then queries again to verify convergence. Query and actuation delays each range from 5 to 10 ms, followed by a 3 ms verification delay. A job makes at most two attempts. Fig.~\ref{fig:recovery} summarizes the procedure.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[>=Stealth, font=\scriptsize,
+ box/.style={draw, rounded corners=2pt, align=center, text width=4.6cm, minimum height=0.7cm},
+ side/.style={box, text width=1.7cm, dashed}]
+\node[box] (r1) at (2.5,0) {Alarm for session $k$ (not already recovering)};
+\node[box] (r2) at (2.5,-1.2) {Query RAN and Core\\(5--10 ms)};
+\node[box] (r3) at (2.5,-2.4) {Refuse if a Core operation is pending;\\done if already consistent};
+\node[box] (r4) at (2.5,-3.6) {Re-check versions, then copy Core session, resources and QoS to the RAN (5--10 ms)};
+\node[box] (r5) at (2.5,-4.8) {Verify with a second query (3 ms)};
+\node[box] (r6) at (2.5,-6.0) {Success: contexts converged};
+\node[side] (rt) at (7.0,-3.7) {Wait 10 ms and retry (at most 2 attempts, else exhausted)};
+\foreach \a/\b in {r1/r2,r2/r3,r3/r4,r4/r5,r5/r6} \draw[->] (\a.south) -- (\b.north);
+\draw[->] (r3.east) -| (rt.north);
+\draw[->] (r5.east) -| (rt.south);
+\draw[->] (rt.east) -- ++(0.5,0) |- (r2.east);
+\end{tikzpicture}
+\caption{Recovery adapter. Pending operations, changed versions, an unavailable adapter or a failed verification lead to a delayed retry; the job is exhausted after two attempts.}
+\label{fig:recovery}
+\end{figure}
 
 Core authority is a modeling choice for these fields. This adapter is not a standardized ``Context Sync Request.'' Successful convergence may remove orphan resources and leave a UE without a usable session. State consistency and service availability are separate outcomes.
 
-\section{Implementation and Experimental Setup}
-\subsection{Software and Scenario Design}
-The prototype uses Python and SimPy for virtual-time scheduling, with a Streamlit demonstration interface \cite{simpy,streamlit}. Separate modules implement the context model, simulator, verifier, metrics, command-line experiments and plots. The dashboard summarizes detection and recovery metrics, filters per-session event timelines, compares configurations against the precomputed benchmark, and exports run results.
+\subsection{Baselines}
+Two baselines use the same snapshot ordering but omit the protocol-aware guards. The immediate checker alarms at the first observed contradiction. The fixed checker alarms when a contradiction has persisted for 25 ms, regardless of freshness, temporal alignment or pending procedures. The aware verifier adds freshness, overlapping stable intervals, pending-deadline checks and a 12 ms persistence threshold. These baselines are task ablations, not replicas of the cited AI system.
 
+\section{Experimental Setup}
+\subsection{Platform and Reproducibility}
+The prototype uses Python and SimPy for virtual-time scheduling, with a Streamlit demonstration interface \cite{simpy,streamlit}. Separate modules implement the context model, simulator, verifier, metrics, command-line experiments and plots. The dashboard summarizes detection and recovery metrics, filters per-session event timelines, compares configurations against the precomputed benchmark, and exports run results. All randomness is seeded, and run metadata records parameters and source hashes.
+
+\subsection{Scenarios, Parameters and Benchmark Suite}
 The twelve scenarios are clean operation, benign delay, request-processing failure, QoS/setup/release completion-processing failure, reordered observations, queued high load, observation outage, access idle/resume, local cell change, and unavailable recovery. Request-processing failure can prevent service without creating a contradiction; injection is therefore not itself a positive ground-truth label.
 
 Each run contains three UEs with two sessions each over 540 virtual ms. Default monitor/oracle ticks are 2 ms, polling is 15 ms, and the procedure timeout is 110 ms. Ordinary application-leg delay is uniform over 3--9 ms; benign-delay legs use 18--42 ms. High load adds a shared three-worker processing queue with 18--42 ms service times. Fault eligibility is sampled per session with probability 0.7. This is not an independently sampled per-packet loss rate.
 
 The main suite uses 40 seeds and four configurations: immediate checking, a fixed 25 ms mismatch checker, aware checking without recovery, and aware checking with recovery. This yields $12\times40\times4=1,920$ runs. Independent observation and recovery random-number streams preserve paired node trajectories until intervention. Additional held-out experiments use seeds 101--120, three scenarios, four polling intervals and three grace values, yielding 720 runs.
 
-\subsection{Ground Truth and Metrics}
+\subsection{Oracle, Procedure and Metrics}
 An oracle reads actual node states at each tick and opens a contradiction episode only after pending procedures end. The verifier consumes observations alone. Both use the same semantic predicates, so this evaluates monitoring under the declared model, not independent conformance of those predicates to the full standards.
 
 An alarm is a true positive only if its key and rule match a truth episode and its time lies within that episode. Early alarms during valid transitions are false positives even if a contradiction develops later. Repeat alarms within an already matched episode count separately as duplicates. Precision is $TP/(TP+FP)$ and recall is detected episodes divided by all truth episodes. The false-positive rate divides negative sessions receiving a false alarm by all sessions with no truth episode in that run. Undefined denominators remain N/A; aggregation pools counts.
@@ -146,6 +288,7 @@ Observation outage & 167 & 0 & 0 & 84.36 & N/A\\\bottomrule
 \end{tabular}
 \end{table}
 
+\subsection{Lead Time of Detection}
 Lead time is conditional on a future failed probe. The outage scenario has none, giving N/A. Setup probe lead reflects the chosen schedule, not a measured call-drop prediction horizon.
 
 \subsection{False Positives Under Valid Delay}
@@ -177,12 +320,13 @@ Adapter unavailable & 334 & 334 & 0/167\\\bottomrule
 
 QoS mismatch exposure falls from 15,698 to 6,192 session-ms, a 60.56\% reduction. Failed probes fall by 55.69\%. These totals aggregate 40 seeds rather than describe one trace. Setup recovery can remove orphan resources and make consistency probes pass without re-establishing a desired session. Observation outages leave little intervention time before later operations and trigger pending/version refusals. An unavailable adapter produces no successful reconciliation.
 
-\subsection{Timing Sensitivity and Software Checks}
+\subsection{Timing Sensitivity}
 The held-out suite varies polling over 5, 15, 30 and 90 ms and grace over 0, 12 and 24 ms for QoS completion failure, benign delay and observation reordering. With 12 ms grace, QoS completion failure yields 77 detected episodes and zero misses at each polling interval. Mean detection delays are 15.69, 21.61, 23.48 and 23.51 ms respectively. Event-triggered snapshots remain enabled, so polling interval is not total observation latency.
 
+\subsection{Software Checks}
 The implementation passes 49 behavioral and integration tests, including dashboard tests. Recorded core line coverage is 98.9\%. Code and type checks pass. The tests were rerun on 30 October 2026. A review fixed source-hash collection to resolve from the package location, enabling experiment provenance when launched from a different working directory. A Windows launcher invokes the existing environment directly. These software checks support reproducibility, not 3GPP certification.
 
-\section{Limitations and Threats to Validity}
+\section{Limitations}
 The simulator abstracts resource transactions and does not encode full NAS, NGAP, QoS-flow/DRB mapping, independent N4 behavior or handover signaling. RRC access controls are limited. Commit policy, timeouts, delay distributions and Core authority are declared experimental assumptions.
 
 Complete snapshots, reliable identities, monotonic sequences and a common clock simplify observation. Real deployments require instrumented adapters, authenticated telemetry, identity correlation and conservative clock-skew bounds. Packet traces alone may not reveal internal committed state. The shared oracle predicates limit independent validation of semantic correctness.
@@ -191,8 +335,10 @@ Six sessions per run and a finite horizon do not establish scalability. Snapshot
 
 Consistency probes do not measure throughput or calls. Recovery can restore agreement by deactivating resources; failed requests can harm availability without desynchronization. The baselines are task ablations, not replicas of the cited AI system.
 
-\section{Conclusion}
-This project implements and evaluates an explainable verifier for a scoped RAN--Core context model. Fresh and temporally aligned observations, procedure guards and persistence distinguish modeled stable contradictions from valid temporary disagreement. The 2,640-run evaluation demonstrates zero aware false alarms in selected benign controls and lower mismatch exposure when bounded recovery is available. The next step is independent validation on instrumented RAN/Core software with user-plane demand, clock skew, concurrent operations and genuine mobility procedures.
+\section{Conclusion and Future Work}
+This project implements and evaluates an explainable verifier for a scoped RAN--Core context model. Fresh and temporally aligned observations, procedure guards and persistence distinguish modeled stable contradictions from valid temporary disagreement. The 2,640-run evaluation demonstrates zero aware false alarms in selected benign controls and lower mismatch exposure when bounded recovery is available.
+
+Future work includes independent validation on instrumented RAN/Core software with user-plane demand, clock skew, concurrent operations and genuine mobility procedures.
 
 \section*{Reproducibility}
 The package includes code, tests, a formal model and locked dependencies. Main results are in \texttt{results/final-benchmark/} (seeds 1--40); held-out results are in \texttt{results/sensitivity.csv}. The Windows launcher \texttt{run.ps1} accepts \texttt{app}, \texttt{test}, \texttt{benchmark} or \texttt{sensitivity}. Paths are relative to the project root.
